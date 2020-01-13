@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-//图片需要引入，才能被webpack打包
 import logo from './logo.png'
 import { Form, Icon, Input, Button,message } from "antd";
-import axios from 'axios'
+//import axios from 'axios'
 import './index.less'
-
+import { reqLogin } from '../../api'
+import { setItem } from '../../utils/storage'
+import { connect } from 'react-redux'
+import { saveUserAsync } from '../../redux/actions'
+ 
+@connect(
+  null,
+  {saveUserAsync}
+ )
  @Form.create()//装饰器语法
  class Login extends Component {
 
@@ -16,7 +23,6 @@ import './index.less'
     const reg = /^\w+$/;
 
     if (!value) {
-      // 输入值为空
       callback(`${name}不能为空`);
     } else if (value.length < 4) {
       callback(`${name}必须大于4位`);
@@ -36,7 +42,7 @@ import './index.less'
        const { username, password } = values
        //说明表单校验成功
        if (!err) {
-         //发送请求,利用代理服务器解决跨域
+         /* //发送请求,利用代理服务器解决跨域
          axios.post("/api/login", { username, password })
          //说明请求成功
          .then((response) => {
@@ -58,7 +64,17 @@ import './index.less'
              message.error('网络错误');
              //清空密码框内容
            this.props.form.resetFields(['password'])
-         })
+         }) */
+
+         this.props.saveUserAsync(username, password)
+           .then(() => {
+            this.props.history.replace('/') 
+           })
+           .catch((msg) => {
+             message.error(msg);
+             this.props.form.resetFields(['password'])
+           })
+         
        }
      });
    }
@@ -123,5 +139,4 @@ import './index.less'
     );
   }
 }
-
 export default Login;
