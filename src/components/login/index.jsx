@@ -27,7 +27,7 @@ import './index.less'
     }
     callback();
    };
-   //点击登录提交
+   //点击登录表单提交
    submitLogin = (e) => {
      e.preventDefault();
      //先进行表单校验
@@ -66,7 +66,7 @@ import './index.less'
   render() {
     //先要通过Form.create()(Login)引入form属性
     const { getFieldDecorator } = this.props.form;
-    
+
     return (
       <div className="login">
         <header className="login-header">
