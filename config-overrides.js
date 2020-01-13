@@ -16,7 +16,9 @@ module.exports = override(
   // 自定义主题
   addLessLoader({
     javascriptEnabled: true,
-    modifyVars: { '@primary-color': '#1DA57A' }
+    modifyVars: {
+      '@primary-color': '#1DA57A'
+    }
   }),
   // ES7 装饰器语法兼容
   // @babel/plugin-proposal-decorators

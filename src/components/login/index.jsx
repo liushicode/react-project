@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-//图片必须引入，才能被webpack打包
+//图片需要引入，才能被webpack打包
 import logo from './logo.png'
-import { Form, Icon, Input, Button } from "antd";
+import { Form, Icon, Input, Button,message } from "antd";
+import axios from 'axios'
 import './index.less'
 
-// @Form.create()//装饰器语法
+ @Form.create()//装饰器语法
  class Login extends Component {
+
   // 自定义表单校验规则
    validator = (rule, value, callback) => {
-    console.log(rule,value);//表单的key和value
+    //console.log(rule,value);//表单的key和value
     const name = rule.field === "username" ? "用户名" : "密码";
 
     const reg = /^\w+$/;
@@ -23,18 +25,48 @@ import './index.less'
     } else if (!reg.test(value)) {
       callback(`${name}只能包含英文、数字、下划线`);
     }
-    /*
-      callback() 调用不传参，代表表单校验成功
-      callback(message) 调用传参，代表表单校验失败，会提示message错误
-    */
-    // 必须要调用，否则会出问题
     callback();
-  };
+   };
+   //点击登录提交
+   submitLogin = (e) => {
+     e.preventDefault();
+     //先进行表单校验
+     this.props.form.validateFields((err, values) => {
+       //console.log(err,values);//null {username: "aadf", password: "dsaf"}
+       const { username, password } = values
+       //说明表单校验成功
+       if (!err) {
+         //发送请求,利用代理服务器解决跨域
+         axios.post("/api/login", { username, password })
+         //说明请求成功
+         .then((response) => {
+           console.log(response.data);
+           
+           if (response.data.status === 0) {
+             this.props.history.replace('/')
+           } else {
+             //显示错误信息
+             message.error(response.data.msg);
+             //清空密码框内容
+             this.props.form.resetFields(['password'])
+           }
+         })
+           //请求失败
+          .catch(err => {
+            //显示错误信息
+             console.log(err);
+             message.error('网络错误');
+             //清空密码框内容
+           this.props.form.resetFields(['password'])
+         })
+       }
+     });
+   }
 
   render() {
-    // getFieldDecorator高阶组件：用来表单校验，先要通过Form.create()(Login)引入form属性
+    //先要通过Form.create()(Login)引入form属性
     const { getFieldDecorator } = this.props.form;
-
+    
     return (
       <div className="login">
         <header className="login-header">
@@ -43,27 +75,10 @@ import './index.less'
         </header>
         <section className="login-section">
           <h3>用户登录</h3>
-          <Form className="login-form">
+          <Form className="login-form" onSubmit={this.submitLogin}>
             <Form.Item>
               {getFieldDecorator("username", {
                 rules: [
-                  // {
-                  //   required: true,
-                  //   message: '用户名不能为空'
-                  // },
-                  // {
-                  //   min: 4,
-                  //   message: '用户名必须大于3位'
-                  // },
-                  // {
-                  //   max: 15,
-                  //   message: '用户名必须小于15位'
-                  // },
-                  // {
-                  //   pattern: /^\w+$/,
-                  //   message: '用户名只能包含英文、数字、下划线'
-                  // }
-
                   {
                     validator: this.validator
                   }
@@ -94,7 +109,11 @@ import './index.less'
               )}
             </Form.Item>
             <Form.Item>
-              <Button className="login-form-btn" type="primary">
+              <Button
+                className="login-form-btn"
+                type="primary"
+                htmlType="submit"
+              >
                 登录
               </Button>
             </Form.Item>
@@ -105,6 +124,4 @@ import './index.less'
   }
 }
 
-// Form.create()(Login) 高阶组件：给Login传递form属性
- export default Form.create()(Login);
-//export default Login;
+export default Login;
