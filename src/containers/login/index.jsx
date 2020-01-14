@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import logo from './logo.png'
+import logo from '../../assets/imgs/logo.png'
 import { Form, Icon, Input, Button,message } from "antd";
 //import axios from 'axios'
 import './index.less'
