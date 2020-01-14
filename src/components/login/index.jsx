@@ -74,7 +74,6 @@ import { saveUserAsync } from '../../redux/actions'
              message.error(msg);
              this.props.form.resetFields(['password'])
            })
-         
        }
      });
    }

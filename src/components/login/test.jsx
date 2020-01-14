@@ -47,7 +47,7 @@ export default function Test() {
     //响应成功，保证下一个.then接收到的一定是成功
     response => {
       if (response.data.status === 0) {
-        return response.data.data
+        return response
       } else {
         return Promise.reject(response.data.msg)
       }
@@ -88,7 +88,9 @@ export default function Test() {
       }
     })
     .then(response => {
-      console.log(response);
+      //console.log(response);
+      token = response.token;
+      message.success('登录成功');
       /* if (response.data.status === 0) {
         token = response.data.data.token;
         message.success('登录成功');
@@ -114,12 +116,14 @@ export default function Test() {
     })
       .then((response) => {
         //console.log(response.data);
-        if (response.data.status === 0) {
+        id = response._id
+        message.success('添加分类成功')
+        /* if (response.data.status === 0) {
           id = response.data.data._id
           message.success('添加分类成功')
         } else {
           message.error(message.data.msg)
-        }
+        } */
       })
       .catch((err) => {
         console.log(err);
@@ -139,11 +143,12 @@ export default function Test() {
     })
       .then((response) => {
         //console.log(response.data);
-        if (response.data.status === 0) {
+        message.success('删除分类成功')
+        /* if (response.data.status === 0) {
           message.success('删除分类成功')
         } else {
           message.error(message.data.msg)
-        }
+        } */
       })
       .catch((err) => {
         console.log(err);
