@@ -6,12 +6,11 @@ import './index.less'
 
 import { connect } from 'react-redux'
 import { saveUserAsync } from '../../redux/actions'
+import withCheckLogin from '$cont/with-check-login';
  
-@connect(
-  null,
-  {saveUserAsync}
- )
- @Form.create()//装饰器语法
+@withCheckLogin
+@connect(null, { saveUserAsync })
+@Form.create()//装饰器语法
  class Login extends Component {
 
   // 自定义表单校验规则
@@ -64,7 +63,6 @@ import { saveUserAsync } from '../../redux/actions'
              //清空密码框内容
            this.props.form.resetFields(['password'])
          }) */
-
          this.props.saveUserAsync(username, password)
            .then(() => {
             this.props.history.replace('/') 
