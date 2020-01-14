@@ -3,8 +3,7 @@ import logo from './logo.png'
 import { Form, Icon, Input, Button,message } from "antd";
 //import axios from 'axios'
 import './index.less'
-import { reqLogin } from '../../api'
-import { setItem } from '../../utils/storage'
+
 import { connect } from 'react-redux'
 import { saveUserAsync } from '../../redux/actions'
  

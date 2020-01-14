@@ -6,6 +6,7 @@ const {
   addWebpackAlias
 } = require('customize-cra');
 
+const { resolve } = require('path')
 module.exports = override(
   // 按需加载
   fixBabelImports('import', {
@@ -24,5 +25,12 @@ module.exports = override(
   // @babel/plugin-proposal-decorators
   addDecoratorsLegacy(),
   // 配置webpack路径别名
-  addWebpackAlias({})
+  addWebpackAlias({
+    '$api': resolve(__dirname, './src/api'),
+    '$comp':resolve(__dirname,'./src/components'),
+    '$conf':resolve(__dirname,'./src/config'),
+    '$cont':resolve(__dirname,'./src/containers'),
+    '$redux':resolve(__dirname,'./src/redux'),
+    '$utils':resolve(__dirname,'./src/utils')
+  })
 );

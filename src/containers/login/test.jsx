@@ -46,6 +46,8 @@ export default function Test() {
   axiosInstance.interceptors.response.use(
     //响应成功，保证下一个.then接收到的一定是成功
     response => {
+      console.log(response);
+      
       if (response.data.status === 0) {
         return response.data.data
       } else {
@@ -88,7 +90,7 @@ export default function Test() {
       }
     })
     .then(response => {
-      //console.log(response);
+      console.log(response);
       token = response.token;
       message.success('登录成功');
       /* if (response.data.status === 0) {
@@ -115,6 +117,7 @@ export default function Test() {
       } */
     })
       .then((response) => {
+        console.log(response);
         id = response._id
         message.success('添加分类成功')
         /* if (response.data.status === 0) {

@@ -4,6 +4,7 @@
 
 import axios from 'axios'
 import errCode from '../config/err-code'
+import store from '$redux/store'
 
 //axios实例
 const axiosInstance = axios.create({
@@ -17,7 +18,7 @@ const axiosInstance = axios.create({
 //请求拦截器，在发送请求之前执行
 axiosInstance.interceptors.request.use(
   config => {
-    let token = '';
+    const token = store.getState().user.token;
     if (token) {
       config.headers.authorization = `Bearer ${token}`;
     }
