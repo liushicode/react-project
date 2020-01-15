@@ -117,6 +117,7 @@ import withCheckLogin from '$cont/with-check-login';
                     <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   placeholder="密码"
+                  type="password"
                 />
               )}
             </Form.Item>

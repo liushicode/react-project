@@ -17,6 +17,7 @@ export default function withCheckLogin(WrappedComponent) {
         user: { token },
         location: { pathname }
       } = this.props;
+      
       if (token) {
         //说明已经登录过
         if (pathname === '/login') {

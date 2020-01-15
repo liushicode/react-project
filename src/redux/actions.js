@@ -1,12 +1,15 @@
 
 import { reqLogin } from '../api'
 import { setItem } from '../utils/storage'
-import {SAVE_USER } from './action-types'
+import {SAVE_USER,REMOVE_USER,CHANGE_LANGUAGE } from './action-types'
 
 const saveUser = (user) => ({
   type: SAVE_USER,
   data: user
 })
+export const removeUser = () => ({ type: REMOVE_USER })
+
+export const changeLanguage = lang =>({type:CHANGE_LANGUAGE,data:lang})
 
 export const saveUserAsync = (username, password) => {
   return (dispatch) => { 
