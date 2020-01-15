@@ -9,6 +9,7 @@ import screenfull from 'screenfull'
 
 import { injectIntl, FormattedMessage } from 'react-intl'
 import menus from '$conf/menus'
+import dayjs from 'dayjs'//时间格式化插件
 
 import "./index.less";
 
@@ -25,7 +26,8 @@ import "./index.less";
 @withRouter
 class HeaderMain extends Component {
   state = {
-    isScreenFull: false
+    isScreenFull: false,
+    date: Date.now()
   }
   handleChangeState = () => {
     const { isScreenFull } = this.state
@@ -35,9 +37,15 @@ class HeaderMain extends Component {
   }
   componentDidMount() {
     screenfull.on("change", this.handleChangeState);
+    this.timeId = setInterval(() => {
+      this.setState({
+        date:Date.now()
+      })
+    },1000)
   }
   componentWillUnmount() {
     screenfull.off("change", this.handleChangeState);
+    clearInterval(this.timeId)
   }
   screenFull = () => {
     screenfull.toggle()
@@ -108,9 +116,11 @@ class HeaderMain extends Component {
         </div>
         <div className="header-bottom">
           <span className="header-bottom-left">
-            <FormattedMessage id={title}/>
+            <FormattedMessage id={title} />
           </span>
-          <span className="header-bottom-right">2020/01/14 22:24:01</span>
+          <span className="header-bottom-right">
+            {dayjs().format("YYYY-MM-DD HH:mm:ss")}
+          </span>
         </div>
       </div>
     );

@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout,  Breadcrumb } from 'antd';
 import React, { Component } from 'react'
 import withCheckLogin from '$cont/with-check-login'
 import logo from '../../assets/imgs/logo.png'
