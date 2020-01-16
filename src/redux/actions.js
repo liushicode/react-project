@@ -1,11 +1,12 @@
 
-import { reqLogin,reqGetCategoryList } from '../api'
+import { reqLogin,reqGetCategoryList,reqAddCategory } from '../api'
 import { setItem } from '../utils/storage'
 import {
   SAVE_USER,
   REMOVE_USER,
   CHANGE_LANGUAGE,
-  GET_CATEGORY_LIST
+  GET_CATEGORY_LIST,
+  ADD_CATEGORY
 } from './action-types'
 
 
@@ -37,9 +38,23 @@ const getCategoryList = categories => ({
 export const getCategoryListAsync = () => {
   return (dispatch) => {
     //发送请求
-    reqGetCategoryList()
+    return reqGetCategoryList()
       .then((response) => {
         dispatch(getCategoryList(response))
+      })
+  }
+}
+
+const addCategory = category => ({
+  type: ADD_CATEGORY,
+  data: category
+})
+export const addCategoryAsync = (categoryName) => {
+  return (dispatch) => {
+    //发送请求
+    return reqAddCategory(categoryName)
+      .then((response) => {
+        dispatch(addCategory(response))
       })
   }
 }

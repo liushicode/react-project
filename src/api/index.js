@@ -17,3 +17,13 @@ export const reqGetCategoryList = () => {
     methos:'GET'
   })
 }
+
+export const reqAddCategory = (categoryName) => {
+  return axiosInstance({
+    url: '/category/add',
+    method: 'POST',
+    data: {
+      categoryName
+    }
+  })
+}
