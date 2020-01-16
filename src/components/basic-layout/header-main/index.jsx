@@ -88,12 +88,12 @@ class HeaderMain extends Component {
     }
   }
   render() {
-    const { isScreenFull } = this.state;
-    const { username,
+    const { isScreenFull,date } = this.state;
+    const {
+      username,
       language,
       location:{pathname}
     } = this.props;
-    //console.log(this.props);
     const title = this.findTitle(menus,pathname)
     
     return (
@@ -119,7 +119,7 @@ class HeaderMain extends Component {
             <FormattedMessage id={title} />
           </span>
           <span className="header-bottom-right">
-            {dayjs().format("YYYY-MM-DD HH:mm:ss")}
+            {dayjs(date).format("YYYY-MM-DD HH:mm:ss")}
           </span>
         </div>
       </div>

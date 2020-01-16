@@ -25,7 +25,7 @@ export default function withCheckLogin(WrappedComponent) {
         }
       } else {
         //说明没有登录过
-        if (pathname === '/'){
+        if (pathname !== '/login'){
           return <Redirect to='/login'/>
         }
       }

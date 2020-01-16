@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl'
 
-import Home from './components/home';
 import Login from './containers/login';
 import BasicLayout from '$comp/basic-layout'
 import { en, zhCN } from './locales';
 import { ConfigProvider } from "antd";//设置antd组件的国际化
+import routes from './config/routes'
 
 import zh_CN from "antd/es/locale/zh_CN";
 import en_US from "antd/es/locale/en_US";
@@ -28,7 +28,10 @@ class App extends Component {
             <Switch>
               <Route path="/login" exact component={Login} />
               <BasicLayout>
-                <Route path="/" exact component={Home} />
+                {routes.map((route) => {
+                  //return <Route path={route.path} exact={route.exact} component={route.component} />
+                  return <Route {...route} key={route.path} />
+                })}
               </BasicLayout>
             </Switch>
           </Router>

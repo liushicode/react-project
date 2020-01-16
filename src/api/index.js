@@ -11,3 +11,9 @@ export const reqLogin = (username,password) => {
     }
   })
 }
+export const reqGetCategoryList = () => {
+  return axiosInstance({
+    url: '/category/get',
+    methos:'GET'
+  })
+}
