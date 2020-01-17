@@ -14,7 +14,7 @@ export const reqLogin = (username,password) => {
 export const reqGetCategoryList = () => {
   return axiosInstance({
     url: '/category/get',
-    methos:'GET'
+    method:'GET'
   })
 }
 
@@ -45,6 +45,17 @@ export const reqDeleteCategory = (categoryId) => {
     method: 'POST',
     data: {
       categoryId,
+    }
+  })
+}
+//请求商品列表数据
+export const reqGetProductList = (pageNum,pageSize) => {
+  return axiosInstance({
+    url: '/product/list',
+    method: 'GET',
+    params: {
+      pageNum,
+      pageSize
     }
   })
 }

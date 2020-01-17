@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import { Card,Select,Input,Button,Icon,Table } from 'antd'
-
+import { Card, Select, Input, Button, Icon, Table, message } from 'antd'
+import { reqGetProductList } from '$api'
+ 
 export default class Product extends Component {
+  state = {
+    productList: [],
+    total:0
+  }
   columns = [
     {
       title: '商品名称',
@@ -40,7 +45,25 @@ export default class Product extends Component {
       }
     }
   ]
+  getProductList = (pageNum,pageSize) => {
+    return reqGetProductList(pageNum,pageSize)
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          productList: response.list,
+          total:response.total
+        })
+        message.success('请求商品列表成功')
+      })
+      .catch((err) => {
+      message.error(err)
+    })
+  }
+  componentDidMount() {
+    this.getProductList(1,3)
+  }
   render() {
+    const { productList ,total} = this.state;
     return (
       <div>
         <Card
@@ -63,14 +86,18 @@ export default class Product extends Component {
         >
           <Table
             columns={this.columns}
-            dataSource={[{}, {}, {}]}
+            dataSource={productList}
             bordere
             pagination={{
               pageSizeOptions: ['3', '6', '9', '12'],
               defaultPageSize: 3,
               showSizeChanger:true,
-              showQuickJumper:true
+              showQuickJumper: true,
+              total,
+              onChange: this.getProductList,//改变页码触发
+              onShowSizeChange:this.getProductList//改变 pageSize 触发
             }}
+            rowKey='_id'
           />
         </Card>
       </div>
