@@ -27,3 +27,24 @@ export const reqAddCategory = (categoryName) => {
     }
   })
 }
+
+export const reqUpdateCategory = (categoryId,categoryName) => {
+  return axiosInstance({
+    url: '/category/update',
+    method: 'POST',
+    data: {
+      categoryId,
+      categoryName
+    }
+  })
+}
+
+export const reqDeleteCategory = (categoryId) => {
+  return axiosInstance({
+    url: '/category/delete',
+    method: 'POST',
+    data: {
+      categoryId,
+    }
+  })
+}

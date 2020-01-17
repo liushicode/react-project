@@ -3,7 +3,13 @@
  */
 import { combineReducers } from 'redux';
 import {
-  SAVE_USER, REMOVE_USER, CHANGE_LANGUAGE, GET_CATEGORY_LIST, ADD_CATEGORY
+  SAVE_USER,
+  REMOVE_USER,
+  CHANGE_LANGUAGE,
+  GET_CATEGORY_LIST,
+  ADD_CATEGORY,
+  UPDATE_CATEGORY,
+  DELETE_CATEGORY
 } from './action-types'
 import { getItem } from '../utils/storage'
 
@@ -36,7 +42,16 @@ function categories(prevState = initCategories, action) {
     case GET_CATEGORY_LIST:
       return action.data
     case ADD_CATEGORY:
-      return [...prevState,action.data]
+      return [...prevState, action.data]
+    case UPDATE_CATEGORY:
+      return prevState.map((category) => {
+        if (category._id === action.data._id) {
+          return action.data
+        }
+        return category
+      })
+    case DELETE_CATEGORY:
+      return prevState.filter(category => category._id !== action.data)
     default:
       return prevState;
   }
