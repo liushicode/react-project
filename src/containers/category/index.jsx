@@ -83,6 +83,7 @@ class Category extends Component {
   }
   //隐藏modal框
   hiddenCategory = () => {
+    this.addCategoryForm.props.form.resetFields();
     this.setState({
       isShowCategoryModal:false
     })

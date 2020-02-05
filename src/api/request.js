@@ -3,15 +3,18 @@
  */
 
 import axios from 'axios'
+import { message } from 'antd'
+
 import errCode from '../config/err-code'
 import store from '$redux/store'
+import { removeItem } from '$utils/storage'
+import { removeUser } from '$redux/actions';
 
 //axios实例
 const axiosInstance = axios.create({
   baseURL: '/api',
   timeout: 20000,
   headers: {
-    
   }
 })
 
@@ -49,7 +52,16 @@ axiosInstance.interceptors.response.use(
     let errMessage = ''
     //接收到失败的响应
     if (err.response) {
-      errMessage = errCode[err.response.status]
+      const status = err.respone.status;
+      errMessage = errCode[status];
+      if (status === 401) {
+        // token过期了，需要重新登录
+        // 清除本地和redux中的数据，跳转到login
+        removeItem('user');
+        // 触发redux更新
+        store.dispatch(removeUser());
+        message.error('登录过期，请重新登录~');
+      }
     } else {
       //没有接收到响应
       if (err.message.indexOf('Network Error') !== -1) {
