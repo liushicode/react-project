@@ -17,7 +17,9 @@ class Category extends Component {
   }
   componentDidMount() {
     //调用，获取数据列表
-    this.props.getCategoryListAsync();
+    if (!this.props.categories.length) {
+      this.props.getCategoryListAsync();
+    }
   }
   columns = [
       {

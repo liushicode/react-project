@@ -47,7 +47,7 @@ export const reqDeleteCategory = (categoryId) => {
     }
   })
 }
-//请求商品列表数据
+//请求商品列表
 export const reqGetProductList = (pageNum,pageSize) => {
   return axiosInstance({
     url: '/product/list',
@@ -55,6 +55,16 @@ export const reqGetProductList = (pageNum,pageSize) => {
     params: {
       pageNum,
       pageSize
+    }
+  })
+}
+//添加商品功能
+export const reqAddProduct = ({categoryId,name,price,desc,datail}) => {
+  return axiosInstance({
+    url: '/product/add',
+    method: 'POST',
+    data: {
+      categoryId, name, price, desc, datail
     }
   })
 }

@@ -59,7 +59,10 @@ class LeftNav extends Component {
   }
 
   render() {
-    const {pathname} = this.props.location
+    let { pathname } = this.props.location
+    if (pathname.indexOf('/product') !== -1) {
+      pathname = '/product'
+    }
     const openKeys = this.findkeys(pathname,menus)
     return (
       <Menu

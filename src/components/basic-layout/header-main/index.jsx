@@ -76,7 +76,11 @@ class HeaderMain extends Component {
       if (menu.children) {
         for (let index = 0; index < menu.children.length; index++) {
           const cMenu = menu.children[index];
-          if (cMenu.path === pathname) {
+          // if (cMenu.path === pathname) {
+          //   return cMenu.title
+          // }
+          //加入addProduct后title找不到,地址栏路径包含/product和product/add
+          if (pathname.indexOf(cMenu.path) !== -1) {
             return cMenu.title
           }
         }
@@ -95,7 +99,7 @@ class HeaderMain extends Component {
       location:{pathname}
     } = this.props;
     const title = this.findTitle(menus,pathname)
-    
+    //加入addProduct后title找不到
     return (
       <div className="header-main">
         <div className="header-top">
