@@ -68,3 +68,41 @@ export const reqAddProduct = ({categoryId,name,price,desc,datail}) => {
     }
   })
 }
+//修改商品功能
+export const reqUpdateProduct = ({ name, desc, price, detail, categoryId, productId }) => {
+  return axiosInstance({
+    url: '/product/update',
+    method: 'POST',
+    data: {
+      name,
+      desc,
+      price,
+      detail,
+      categoryId,
+      productId
+    }
+  });
+};
+//搜索商品
+export const reqSearchProduct = ({pageNum, pageSize,searchType,searchValue}) => {
+  return axiosInstance({
+    url: '/product/search',
+    method: 'GET',
+    params: {//get请求用params
+      pageNum,
+      pageSize,
+      [searchType]:searchValue
+    }
+  })
+}
+//更新商品状态数据
+export const reqUpdateProductStatus = (productId, status) => {
+  return axiosInstance({
+    url: '/product/update/status',
+    method: 'POST',
+    data: {
+      productId,
+      status
+    }
+  });
+};

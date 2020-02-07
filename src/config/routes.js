@@ -1,7 +1,7 @@
 import Home from '$comp/home'
 import Category from '$cont/category'
 import Product from '$cont/product'
-import AddProduct from '$cont/product/add-product'
+import ProductForm from '$cont/product/product-form'
 
 const routes = [
   {
@@ -21,7 +21,12 @@ const routes = [
   },
   {
     path: '/product/add',
-    component: AddProduct,
+    component: ProductForm,
+    exact: true
+  },
+  {
+    path: '/product/update/:id',
+    component: ProductForm,
     exact: true
   }
 ]
