@@ -2,6 +2,7 @@ import Home from '$comp/home'
 import Category from '$cont/category'
 import Product from '$cont/product'
 import ProductForm from '$cont/product/product-form'
+import Role from '$cont/role'
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
   {
     path: '/product/update/:id',
     component: ProductForm,
+    exact: true
+  },
+  {
+    path: '/role',
+    component: Role,
     exact: true
   }
 ]

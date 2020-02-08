@@ -106,3 +106,11 @@ export const reqUpdateProductStatus = (productId, status) => {
     }
   });
 };
+
+//获取角色列表数据
+export const reqGetRoleList = () => {
+  return axiosInstance({
+    url: '/role/get',
+    method: 'GET',
+  });
+};

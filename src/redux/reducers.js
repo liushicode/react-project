@@ -9,7 +9,8 @@ import {
   GET_CATEGORY_LIST,
   ADD_CATEGORY,
   UPDATE_CATEGORY,
-  DELETE_CATEGORY
+  DELETE_CATEGORY,
+  GET_ROLE_LIST
 } from './action-types'
 import { getItem } from '../utils/storage'
 
@@ -56,9 +57,18 @@ function categories(prevState = initCategories, action) {
       return prevState;
   }
 }
+function roles(prevState = [], action) {
+  switch (action.type) {
+    case GET_ROLE_LIST:
+      return action.data;
+    default:
+      return prevState
+  }
+}
 
 export default combineReducers({
   user,
   language,
-  categories
+  categories,
+  roles
 });

@@ -1,5 +1,13 @@
 
-import { reqLogin,reqGetCategoryList,reqAddCategory ,reqUpdateCategory,reqDeleteCategory} from '../api'
+import {
+  reqLogin,
+  reqGetCategoryList,
+  reqAddCategory,
+  reqUpdateCategory,
+  reqDeleteCategory,
+  reqGetRoleList
+} from '../api'
+
 import { setItem } from '../utils/storage'
 import {
   SAVE_USER,
@@ -8,7 +16,8 @@ import {
   GET_CATEGORY_LIST,
   ADD_CATEGORY,
   UPDATE_CATEGORY,
-  DELETE_CATEGORY
+  DELETE_CATEGORY,
+  GET_ROLE_LIST
 } from './action-types'
 
 
@@ -24,12 +33,10 @@ export const saveUserAsync = (username, password) => {
   return (dispatch) => { 
     return  reqLogin(username, password)
       .then(response => {
-        //要把用户数据和token存储在redux和localStorage中
+        //把用户数据存储在localStorage
         setItem('user', response)
-
         dispatch(saveUser(response))
       })
-    //返回值作为组件调用时的返回值
   }
 }
 
@@ -85,6 +92,20 @@ export const deleteCategoryAsync = (categoryId) => {
     return reqDeleteCategory(categoryId)
       .then((response) => {
         dispatch(deleteCategory(response))
+      })
+  }
+}
+
+const getRoleList = roles => ({
+  type: GET_ROLE_LIST,
+  data:roles
+})
+export const getRoleListAsync = () => {
+  return (dispatch) => {
+    //发送请求
+    return reqGetRoleList()
+      .then((response) => {
+        dispatch(getRoleList(response))
       })
   }
 }
