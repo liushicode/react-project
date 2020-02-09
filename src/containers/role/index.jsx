@@ -3,11 +3,12 @@ import { Card, Button, Radio, Table,  message ,Modal} from 'antd'
 import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 
-import { getRoleListAsync } from '$redux/actions'
+import { getRoleListAsync,addRoleAsync } from '$redux/actions'
+import AddRoleForm from './add-role-form';
 const { Group } = Radio;
 
 @connect((state) => ({ roles: state.roles }),
-{getRoleListAsync}
+{getRoleListAsync,addRoleAsync}
 )
 class Role extends Component {
   state = {
@@ -51,6 +52,7 @@ class Role extends Component {
       title: '授权时间',
       dataIndex: 'authTime',
       render: time => {
+        //没有授权时，不应该显示时间,time为undefined时，页面不显示，有time,显示授权时间
         return time && dayjs(time).format('YYYY/MM/DD HH:mm:ss');
       }
     },
@@ -61,10 +63,38 @@ class Role extends Component {
   ]
   switchAddRoleModal = (isShowAddRoleModal) => {
     return () => {
+      if (!isShowAddRoleModal) {
+        this.addRoleForm.props.form.resetFields()
+      }
       this.setState({
         isShowAddRoleModal: isShowAddRoleModal
       })
     }
+  }
+  //添加角色
+  addRole = () => {
+    //console.log(this.addRoleForm);
+    //收集表单数据，发送创建角色请求
+    const { validateFields,resetFields } = this.addRoleForm.props.form
+    validateFields((err, values) => {
+      if (!err) {
+        const { name } = values;
+        this.props.addRoleAsync(name)
+          .then(() => {
+            message.success('创建新角色成功')
+            //隐藏添加角色框
+            this.setState({
+              isShowAddRoleModal: false,
+            })
+            //清除表单数据
+            resetFields()
+          })
+          .catch(err => {
+            message.error(err)
+          })
+      }
+    })
+    
   }
   render() {
     const { roles } = this.props;
@@ -88,9 +118,11 @@ class Role extends Component {
         <Modal
           title="创建新角色"
           visible={this.state.isShowAddRoleModal}
-          onOk={this.handleOk}
+          onOk={this.addRole}
           onCancel={this.switchAddRoleModal(false)}
-        />
+        >
+          <AddRoleForm wrappedComponentRef={form=>this.addRoleForm = form} />
+          </Modal>
       </Card>
     )
   }

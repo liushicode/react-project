@@ -5,7 +5,8 @@ import {
   reqAddCategory,
   reqUpdateCategory,
   reqDeleteCategory,
-  reqGetRoleList
+  reqGetRoleList,
+  reqAddRole
 } from '../api'
 
 import { setItem } from '../utils/storage'
@@ -17,7 +18,8 @@ import {
   ADD_CATEGORY,
   UPDATE_CATEGORY,
   DELETE_CATEGORY,
-  GET_ROLE_LIST
+  GET_ROLE_LIST,
+  ADD_ROLE
 } from './action-types'
 
 
@@ -106,6 +108,17 @@ export const getRoleListAsync = () => {
     return reqGetRoleList()
       .then((response) => {
         dispatch(getRoleList(response))
+      })
+  }
+}
+
+const addRole = role => ({ type: ADD_ROLE, data: role })
+//异步action
+export const addRoleAsync = (name) => {
+  return (dispatch) => {
+    return reqAddRole(name)
+      .then((res) => {
+        dispatch(addRole(res))
       })
   }
 }

@@ -36,7 +36,6 @@ import withCheckLogin from '$cont/with-check-login';
      e.preventDefault();
      //先进行表单校验
      this.props.form.validateFields((err, values) => {
-       //console.log(err,values);//null {username: "aadf", password: "dsaf"}
        const { username, password } = values
        //说明表单校验成功
        if (!err) {

@@ -114,3 +114,13 @@ export const reqGetRoleList = () => {
     method: 'GET',
   });
 };
+//创建角色
+export const reqAddRole = (name) => {
+  return axiosInstance({
+    url: '/role/add',
+    method: 'post',
+    data: {
+      name
+    }
+  });
+};
