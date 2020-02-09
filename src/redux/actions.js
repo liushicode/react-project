@@ -6,7 +6,8 @@ import {
   reqUpdateCategory,
   reqDeleteCategory,
   reqGetRoleList,
-  reqAddRole
+  reqAddRole,
+  reqUpdateRole
 } from '../api'
 
 import { setItem } from '../utils/storage'
@@ -19,7 +20,8 @@ import {
   UPDATE_CATEGORY,
   DELETE_CATEGORY,
   GET_ROLE_LIST,
-  ADD_ROLE
+  ADD_ROLE,
+  UPDATE_ROLE
 } from './action-types'
 
 
@@ -119,6 +121,21 @@ export const addRoleAsync = (name) => {
     return reqAddRole(name)
       .then((res) => {
         dispatch(addRole(res))
+      })
+  }
+}
+
+const updateRole = role => ({
+  type: UPDATE_ROLE,
+  data: role
+});
+//异步action
+export const updateRoleAsync = (name) => {
+  return (dispatch) => {
+    return reqUpdateRole(name)
+      .then((res) => {
+        dispatch(updateRole(res));
+        return res;
       })
   }
 }

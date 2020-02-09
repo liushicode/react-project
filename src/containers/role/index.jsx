@@ -3,17 +3,20 @@ import { Card, Button, Radio, Table,  message ,Modal} from 'antd'
 import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 
-import { getRoleListAsync,addRoleAsync } from '$redux/actions'
+import { getRoleListAsync,addRoleAsync,updateRoleAsync } from '$redux/actions'
 import AddRoleForm from './add-role-form';
+import UpdateRoleForm from './update-role-form'
 const { Group } = Radio;
 
-@connect((state) => ({ roles: state.roles }),
-{getRoleListAsync,addRoleAsync}
+@connect((state) => ({ roles: state.roles,username:state.user.user.username }),
+{getRoleListAsync,addRoleAsync,updateRoleAsync}
 )
 class Role extends Component {
   state = {
-    isShowAddRoleModal:false,
-    isLoading:false
+    isShowAddRoleModal: false,
+    isShowUpdateRoleModal:false,
+    isLoading: false,
+    role:{},//选中的角色
   }
   componentDidMount() {
     this.setState({
@@ -61,13 +64,19 @@ class Role extends Component {
       dataIndex: 'authName'
     }
   ]
-  switchAddRoleModal = (isShowAddRoleModal) => {
+  //控制Modal框显示/隐藏
+  switchModal = (key, value) => {
     return () => {
-      if (!isShowAddRoleModal) {
-        this.addRoleForm.props.form.resetFields()
+      //如果处于隐藏状态，清空表单数据
+      if (!value) {
+        if (key === 'isAddRoleModal') {
+          this.addRoleForm.props.form.resetFields()
+        } else {
+          //this.addRoleForm.props.form.resetFields()
+        }
       }
       this.setState({
-        isShowAddRoleModal: isShowAddRoleModal
+        [key]: value
       })
     }
   }
@@ -96,18 +105,51 @@ class Role extends Component {
     })
     
   }
+  //更新角色权限
+  updateRole = () => {
+    const { validateFields, resetFields } = this.updateRoleForm.props.form
+    validateFields((err,values) => {
+      if (!err) {
+        const { menus } = values;
+        const roleId = this.state.role._id;
+        const authName = this.props.username;
+        this.props.updateRoleAsync({ roleId, menus:JSON.stringify(menus), authName })
+          .then((res) => {
+            message.success('更新角色权限成功')
+            this.setState({
+              isShowUpdateRoleModal: false,
+              role:res
+            })
+            //清空表单数据
+            resetFields();
+          })
+          .catch(err => {
+            message.error(err)
+          })
+      }
+    })
+  }
+  handleRadioChange = (e) => {
+    //只能获取到id
+    const id = e.target.value;
+    const role = this.props.roles.find(role=> role._id === id)
+    //更新状态
+    this.setState({
+      role
+    })
+  }
   render() {
     const { roles } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading,role,isShowAddRoleModal,isShowUpdateRoleModal } = this.state;
     return (
       <Card title={
         <div>
-          <Button type='primary' onClick={this.switchAddRoleModal(true)}>创建角色</Button>
+          <Button type='primary' onClick={this.switchModal('isShowAddRoleModal',true)}>创建角色</Button>
           &nbsp;&nbsp;
-          <Button type='primary' disabled>设置角色权限</Button>
+          <Button type='primary' disabled={!role._id} onClick={this.switchModal('isShowUpdateRoleModal',true)}>设置角色权限</Button>
         </div>
       }>
-        <Group style={{ width: '100%' }}>
+        <Group style={{ width: '100%' }} onChange={this.handleRadioChange}>
           <Table
             columns={this.columns}
             dataSource={roles}
@@ -118,12 +160,22 @@ class Role extends Component {
         </Group >
         <Modal
           title="创建新角色"
-          visible={this.state.isShowAddRoleModal}
+          visible={isShowAddRoleModal}
           onOk={this.addRole}
-          onCancel={this.switchAddRoleModal(false)}
+          onCancel={this.switchModal('isShowAddRoleModal',false)}
         >
-          <AddRoleForm wrappedComponentRef={form=>this.addRoleForm = form} />
-          </Modal>
+          <AddRoleForm wrappedComponentRef={form=>(this.addRoleForm = form)} />
+        </Modal>
+        <Modal
+          title="设置角色权限"
+          visible={isShowUpdateRoleModal}
+          onOk={this.updateRole}
+          onCancel={this.switchModal('isShowUpdateRoleModal',false)}
+        >
+          <UpdateRoleForm role={role}
+            wrappedComponentRef={form=>(this.updateRoleForm = form)}
+          />
+        </Modal>
       </Card>
     )
   }

@@ -134,3 +134,19 @@ export const reqAddRole = (name) => {
     }
   });
 };
+//请求更新角色权限
+export const reqUpdateRole = ({
+  roleId,
+  authName,
+  menus
+}) => {
+  return axiosInstance({
+    url: '/role/update',
+    method: 'POST',
+    data: {
+      roleId,
+      authName,
+      menus
+    }
+  });
+};
