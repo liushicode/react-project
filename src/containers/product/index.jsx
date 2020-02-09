@@ -8,7 +8,8 @@ export default class Product extends Component {
     total: 0,
     isLoading: false,
     searchType:'productName',
-    searchValue:''
+    searchValue: '',
+    current:1
   }
   //给组件定义一个属性，判断是普通获取还是搜索获取
   //因为setState是异步的，不能使用
@@ -123,7 +124,8 @@ export default class Product extends Component {
           total: response.total,
           //如果修改了searchValue，没有点击搜索，还按照currentSearchValue进行搜索
           //需要将值修改回来
-          searchValue:currentSearchValue
+          searchValue: currentSearchValue,
+          current:pageNum
         })
         message.success(
           `${currentSearchValue ? '搜索' : '获取'}商品列表数据成功~`
@@ -160,7 +162,7 @@ export default class Product extends Component {
     this.getProductList(1,3)
   }
   render() {
-    const { productList ,total,isLoading,searchType,searchValue} = this.state;
+    const { productList ,total,isLoading,searchType,searchValue,current} = this.state;
     return (
       <div>
         <Card
@@ -196,7 +198,8 @@ export default class Product extends Component {
               showQuickJumper: true,
               total,
               onChange: this.getProductList,//改变页码触发
-              onShowSizeChange: this.getProductList//改变 pageSize 触发
+              onShowSizeChange: this.getProductList,//改变 pageSize 触发
+              current
             }}
             rowKey='_id'
             loading={isLoading}
