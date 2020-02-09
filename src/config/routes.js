@@ -3,6 +3,7 @@ import Category from '$cont/category'
 import Product from '$cont/product'
 import ProductForm from '$cont/product/product-form'
 import Role from '$cont/role'
+import User from '$cont/user'
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
   {
     path: '/role',
     component: Role,
+    exact: true
+  },
+  {
+    path: '/user',
+    component: User,
     exact: true
   }
 ]

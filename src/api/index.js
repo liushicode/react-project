@@ -150,3 +150,24 @@ export const reqUpdateRole = ({
     }
   });
 };
+//获取用户列表数据
+export const reqGetUser = () => {
+  return axiosInstance({
+    url: '/user/get',
+    method: 'GET'
+  });
+};
+//请求添加角色
+export const reqAddUser = ({username,password,phone,email,roleId}) => {
+  return axiosInstance({
+    url: '/user/add',
+    method: 'POST',
+    data: {
+      username,
+      password,
+      phone,
+      email,
+      roleId
+    }
+  });
+};

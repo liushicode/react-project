@@ -114,7 +114,7 @@ class Role extends Component {
         const roleId = this.state.role._id;
         const authName = this.props.username;
         this.props.updateRoleAsync({ roleId, menus:JSON.stringify(menus), authName })
-          .then((res) => {
+          .then((res) => {//promise数据传递
             message.success('更新角色权限成功')
             this.setState({
               isShowUpdateRoleModal: false,
