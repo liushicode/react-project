@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import './index.less'
 import "braft-editor/dist/index.css";
 import { getCategoryListAsync } from "$redux/actions";
-import { reqAddProduct,reqUpdateProduct } from '$api'
+import { reqAddProduct,reqUpdateProduct,reqGetProduct } from '$api'
 
 const { Item } = Form;
 const { Option } = Select
@@ -14,6 +14,9 @@ const { Option } = Select
 @connect(state => ({ categories: state.categories }), {getCategoryListAsync})
 @Form.create()
 class ProductForm extends Component {
+  state = {
+    product:{}
+  }
   goBack = () => {
     this.props.history.push("/product");
   };
@@ -22,6 +25,20 @@ class ProductForm extends Component {
       //避免多次发送请求
       // 如果redux管理的categories有数据，再发送请求，请求分类数据
       this.props.getCategoryListAsync();
+    }
+    //判断是否是修改商品，有无state数据
+    if (!this.isAddProduct() && !this.props.location.state) {
+      //都没有，要手动请求数据回来
+      const productId = this.props.match.params.id;
+      reqGetProduct(productId)
+        .then((res) => {
+          this.setState({
+            product:res
+          })
+        })
+        .catch(err => {
+          message.error(err)
+        })
     }
   }
   isAddProduct = () => {
@@ -65,16 +82,17 @@ class ProductForm extends Component {
     });
   };
   //处理商品Id
-  handleCategoryId = isAddProduct => {
+  handleCategoryId = (isAddProduct,product) => {
     //如果是添加商品，什么都不显示
     if (isAddProduct) {
       return '0'
     }
     //修改商品
-    const { categories, location: {
-      state: { categoryId }
-    } } = this.props;
+    const { categories } = this.props;
+    const { categoryId } = product;
     const category = categories.find((category) => {
+      // category._id 是分类数据中的id
+      // categoryId 指的是路由传参的商品数据的分类id
       return category._id === categoryId;
     })
     if (category) {
@@ -83,6 +101,17 @@ class ProductForm extends Component {
     return '0'
   }
   render() {
+    const {
+      form: { getFieldDecorator },
+      categories,
+      location
+    } = this.props;
+    const { product } = this.state;
+    const routeData = location.state;
+    //state不能为空，如果roudateData为undefined,就从state中获取
+    const state = routeData || product;
+    //标识是否是添加商品
+    const isAddProduct = this.isAddProduct();
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -93,12 +122,6 @@ class ProductForm extends Component {
         sm: { span: 8 }
       }
     };
-    const {
-      form: { getFieldDecorator },
-      categories
-    } = this.props;
-    const { state } = this.props.location;
-    let isAddProduct = this.isAddProduct();
     return (
       <Card
         title={
@@ -124,7 +147,7 @@ class ProductForm extends Component {
           <Item label="商品分类">
             {getFieldDecorator("categoryId", {
               rules: [{ required: true, message: "请选择商品分类" }],
-              initialValue: this.handleCategoryId(isAddProduct)
+              initialValue: this.handleCategoryId(isAddProduct,product)
             })(
               <Select placeholder="请选择商品分类">
                 <Option value='0' key = '0'>暂无分类</Option>
