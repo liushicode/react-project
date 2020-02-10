@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
-import { Form,Input,Select } from 'antd';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { Form, Input, Select } from "antd";
+import PropTypes from "prop-types";
 
-const { Item } = Form
+const { Item } = Form;
 const { Option } = Select;
 @Form.create()
 class UserForm extends Component {
   static propTypes = {
     roles: PropTypes.array.isRequired
-  }
+  };
   render() {
     const validator = (rule, value, callback) => {
-      const name = rule.field === 'username' ? '用户名' : '密码';
+      const name = rule.field === "username" ? "用户名" : "密码";
       const reg = /^\w+$/;
       if (!value) {
         callback();
@@ -24,51 +24,47 @@ class UserForm extends Component {
       }
       callback();
     };
-    const { form: { getFieldDecorator }, roles } = this.props;
+    const {
+      form: { getFieldDecorator },
+      roles
+    } = this.props;
     return (
       <Form>
         <Item label="用户名">
-          {
-            getFieldDecorator(
-              'username',
-              {
-                rules: [
-                  { required: true, message: '请输入用户名' },
-                  {
-                    validator
-                  }
-                ]
-              }
-            )(
-              <Input placeholder="请输入用户名"></Input>
-            )
-          }
-        </Item>
-        <Item label='密码'>
-          {getFieldDecorator('password', {
+          {getFieldDecorator("username", {
             rules: [
-              { required: true, message: '请输入密码' },
+              { required: true, message: "请输入用户名" },
               {
                 validator
               }
             ]
-          })(<Input placeholder='请输入密码' />)}
+          })(<Input placeholder="请输入用户名"></Input>)}
         </Item>
-        <Item label='手机号'>
-          {getFieldDecorator('phone', {
-            rules: [{ required: true, message: '请输入手机号' }]
-          })(<Input placeholder='请输入手机号' />)}
+        <Item label="密码">
+          {getFieldDecorator("password", {
+            rules: [
+              { required: true, message: "请输入密码" },
+              {
+                validator
+              }
+            ]
+          })(<Input placeholder="请输入密码" />)}
         </Item>
-        <Item label='邮箱'>
-          {getFieldDecorator('email', {
-            rules: [{ required: true, message: '请输入邮箱' }]
-          })(<Input placeholder='请输入邮箱' />)}
+        <Item label="手机号">
+          {getFieldDecorator("phone", {
+            rules: [{ required: true, message: "请输入手机号" }]
+          })(<Input placeholder="请输入手机号" />)}
         </Item>
-        <Item label='所属角色'>
-          {getFieldDecorator('roleId', {
-            rules: [{ required: true, message: '请选择角色' }]
+        <Item label="邮箱">
+          {getFieldDecorator("email", {
+            rules: [{ required: true, message: "请输入邮箱" }]
+          })(<Input placeholder="请输入邮箱" />)}
+        </Item>
+        <Item label="所属角色">
+          {getFieldDecorator("roleId", {
+            rules: [{ required: true, message: "请选择角色" }]
           })(
-            <Select placeholder='请选择角色'>
+            <Select placeholder="请选择角色">
               {roles.map(role => {
                 return (
                   <Option key={role._id} value={role._id}>
@@ -80,8 +76,7 @@ class UserForm extends Component {
           )}
         </Item>
       </Form>
-    )
+    );
   }
 }
-
-export default UserForm
+export default UserForm;

@@ -154,6 +154,12 @@ class Role extends Component {
             columns={this.columns}
             dataSource={roles}
             bordered
+            pagination={{
+              showSizeChanger: true,
+              showQuickJumper: true,
+              defaultPageSize: 6,
+              pageSizeOptions: ["3", "6", "9", "12"] //指定每页可以显示多少条
+            }}
             rowKey='_id'
             loading = {isLoading}
           />

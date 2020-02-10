@@ -112,7 +112,7 @@ class User extends Component {
     })
   }
   render() {
-    const { isLoading, users,isShowUserModal } = this.state;
+    const { users, isLoading, isShowUserModal } = this.state;
     const { roles } = this.props;
     return (
       <Card title={
@@ -125,6 +125,12 @@ class User extends Component {
           columns={this.columns}
           dataSource={users}
           bordered
+          pagination={{
+            showSizeChanger: true,
+            showQuickJumper: true,
+            defaultPageSize: 6,
+            pageSizeOptions: ["3", "6", "9", "12"] //指定每页可以显示多少条
+          }}
           rowKey='_id'
           loading={isLoading}
         >
